@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
+body {
+  background: radial-gradient(circle at 30% 30%, #000, #020617);
+  color: #cbd5e1;
+  font-family: 'Fira Code', monospace;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.terminal {
+  max-width: 850px;
+  margin: 3rem auto;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0f172a;
+  box-shadow: 0 0 20px #0ea5e9;
+}
+
+.header {
+  background: linear-gradient(to right, #0ea5e9, #7c3aed);
+  padding: 0.8rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+}
+
+.header .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.red { background: #ef4444; }
+.yellow { background: #facc15; }
+.green { background: #22c55e; }
+
+.content {
+  padding: 1.5rem;
+}
+
+nav {
+  margin: 1rem 0 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+nav button {
+  background: transparent;
+  border: 1px solid #0ea5e9;
+  color: #0ea5e9;
+  padding: 5px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+nav button:hover, nav button.active {
+  background: linear-gradient(to right, #0ea5e9, #7c3aed);
+  color: white;
+}
+
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.skills span {
+  border: 1px solid #0ea5e9;
+  padding: 4px 10px;
+  margin: 4px;
+  border-radius: 4px;
+  color: #0ea5e9;
+  display: inline-block;
+}
+
+a {
+  color: #7dd3fc;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
