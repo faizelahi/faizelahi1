@@ -1,40 +1,159 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Faiz Elahi | Hacker Portfolio</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Faiz Elahi — Codespace Resume (Single File)</title>
+
+<style>
+/* ---------- Fonts ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+
+/* ---------- Reset & Base ---------- */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:"Fira Code",monospace;
+  background:#020409;
+  color:#c7ffe0;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow:hidden;
+}
+
+/* ---------- Canvas (matrix) ---------- */
+#matrixCanvas{
+  position:fixed;inset:0;z-index:0;
+  background:#000;
+}
+
+/* ---------- Boot screen ---------- */
+#boot{
+  position:fixed;inset:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+  padding:48px;background:linear-gradient(#00120a,#000);
+  z-index:30;color:#9fffb0;font-size:16px;line-height:1.75;
+  font-family:"Fira Code",monospace;
+}
+#boot p{margin:6px 0;opacity:.95}
+#boot .dots{margin-top:14px;font-size:12px;color:#0ff}
+
+/* ---------- Main app container (hidden at start) ---------- */
+#app{display:none;position:relative;z-index:10;height:100vh;overflow:hidden}
+
+/* ---------- Header ---------- */
+.header{
+  display:flex;align-items:center;gap:12px;padding:14px 22px;border-bottom:1px solid rgba(0,255,128,0.06);
+  background:linear-gradient(90deg, rgba(0,0,0,0.6), rgba(0,0,0,0.25));
+  backdrop-filter: blur(4px);
+}
+.header .dots{display:flex;gap:8px}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+.dot.red{background:#ff3c3c}
+.dot.yellow{background:#facc15}
+.dot.green{background:#00ff00}
+.header h1{font-size:18px;color:transparent;background:linear-gradient(90deg,#00ff88,#00e5ff,#ff6b6b);-webkit-background-clip:text;white-space:nowrap}
+
+/* ---------- Layout ---------- */
+.layout{display:flex;height:calc(100vh - 66px);overflow:hidden}
+.sidebar{
+  width:240px;background:#03060a;border-right:1px solid rgba(0,255,128,.06);padding:18px;overflow:auto;
+}
+.sidebar .brand{font-weight:700;margin-bottom:10px;color:#7fffd4}
+.sidebar button{
+  display:block;width:100%;text-align:left;padding:10px 12px;margin-bottom:8px;border-radius:8px;
+  background:transparent;border:1px solid rgba(0,255,128,0.12);color:#9fffb0;cursor:pointer;font-size:13px
+}
+.sidebar button.active, .sidebar button:hover{
+  background:linear-gradient(90deg,#00ff88,#ff6b6b);color:#061216;border-color:transparent;box-shadow:0 6px 18px rgba(0,255,128,0.06)
+}
+.content{
+  flex:1;padding:18px 26px;overflow:auto;scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* ---------- Sections & Typography ---------- */
+.section{display:none}
+.section.active{display:block}
+h2{
+  font-size:20px;margin-bottom:12px;background:linear-gradient(90deg,#00ff88,#00e5ff,#ff6b6b);-webkit-background-clip:text;color:transparent
+}
+p,li{color:#b9ffd6;margin-bottom:10px;line-height:1.6}
+a{color:#7fefff}
+.tags{margin-top:10px}
+.tag{display:inline-block;padding:6px 8px;border-radius:6px;margin-right:6px;margin-bottom:6px;border:1px solid rgba(0,255,128,0.12);font-size:12px}
+
+/* ---------- Cards ---------- */
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
+  border:1px solid rgba(0,255,128,0.09);padding:14px;border-radius:10px;margin-bottom:12px;position:relative;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 48px rgba(0,255,128,0.06)}
+.card h3{font-size:16px;color:#dfffe0;margin-bottom:8px}
+.card p{color:#b6ffcf}
+.card .meta{font-size:12px;color:#9fefc3;margin-top:8px}
+.card .readmore{color:#ff6b6b;cursor:pointer;margin-left:6px;font-size:12px}
+
+/* ---------- Cursor & Typewriter ---------- */
+#titleSmall{font-family:"Fira Code",monospace;color:#9fffb0}
+.cursor{display:inline-block;width:10px;height:18px;background:#00ff88;margin-left:6px;animation:blink 1s steps(2) infinite}
+@keyframes blink{0%{opacity:1}50%{opacity:0}100%{opacity:1}}
+
+/* ---------- Matrix overlay (subtle) ---------- */
+.matrixOverlay{
+  position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.12;
+}
+
+/* ---------- Footer ---------- */
+.footer{padding:10px 18px;text-align:center;color:rgba(160,255,200,0.7);font-size:13px;border-top:1px solid rgba(0,255,128,0.02)}
+
+/* ---------- Responsive ---------- */
+@media(max-width:900px){
+  .sidebar{width:100%;display:flex;gap:8px;overflow-x:auto;height:auto;padding:10px}
+  .layout{flex-direction:column;height:auto}
+  .content{height:calc(100vh - 170px)}
+}
+
+/* ---------- Utilities (lots of placeholder rules for future expansion) ---------- */
+/* Many utility classes to emulate a "big" CSS file to hold future styles */
+.u-flex{display:flex}.u-center{align-items:center;justify-content:center}
+.small{font-size:12px}.muted{color:rgba(180,255,190,0.6)}
+.grid{display:grid;gap:10px}.cols-2{grid-template-columns:1fr 1fr}.cols-3{grid-template-columns:repeat(3,1fr)}
+.separator{height:1px;background:rgba(0,255,128,0.03);margin:12px 0;border-radius:2px}
+.badge{padding:6px 8px;border-radius:6px;background:rgba(0,0,0,0.25);border:1px solid rgba(0,255,128,0.04)}
+/* ... (this file intentionally contains many placeholder utility rules you can extend) */
+
+</style>
 </head>
 <body>
 
-<!-- Boot animation -->
-<div id="boot" class="boot">
+<!-- Matrix canvas -->
+<canvas id="matrixCanvas"></canvas>
+
+<!-- Boot screen -->
+<div id="boot">
   <p>Initializing system...</p>
   <p>Loading modules...</p>
   <p>Starting terminal interface...</p>
   <p>Loading hacker profile...</p>
   <p>Almost ready...</p>
+  <div class="dots">[ boot sequence running ]</div>
 </div>
 
-<!-- Main container -->
-<div id="main" style="display:none;">
-
-  <!-- Terminal header -->
-  <div class="header">
+<!-- App content (hidden initially) -->
+<div id="app" aria-hidden="true">
+  <header class="header">
     <div class="dots">
       <span class="dot red"></span>
       <span class="dot yellow"></span>
       <span class="dot green"></span>
     </div>
-    <h1 id="typewriter"></h1>
-  </div>
+    <h1 id="titleSmall"></h1>
+  </header>
 
-  <!-- Container -->
-  <div class="container">
-
-    <!-- Sidebar navigation -->
-    <div class="sidebar">
+  <div class="layout">
+    <aside class="sidebar" role="navigation" aria-label="Sections">
+      <div class="brand">Faiz · Codespace</div>
       <button class="active" data-section="about">About</button>
       <button data-section="skills">Skills</button>
       <button data-section="projects">Projects</button>
@@ -45,139 +164,348 @@
       <button data-section="certs">Certifications</button>
       <button data-section="contact">Contact</button>
       <button data-section="resume">Resume</button>
-    </div>
+    </aside>
 
-    <!-- Main content -->
-    <div class="main">
-
-      <!-- About Section -->
+    <main class="content" id="content" role="main">
+      <!-- Sections -->
       <section id="about" class="section active">
-        <h2>// About Me</h2>
+        <h2>// About</h2>
         <p>I am an aspiring cybersecurity professional focused on launching a career in Tech. With a keen interest in defensive security, I am driven to develop expertise in monitoring, detecting, and responding to cyber threats.</p>
-        <p>My goal is to apply my foundational knowledge in threat analysis, incident handling, and log management to contribute effectively to proactive security measures within an organization.</p>
-        <p>I love building tools, exploring vulnerabilities, and sharing knowledge with the community. Curiosity drives me to push boundaries safely and ethically.</p>
-        <p>Additional details: Experienced with SIEM, Digital Forensics, Incident Response, Threat Intelligence, and Security Operations Centers (SOC).</p>
-        <p>My mission is to merge technical skills with analytical thinking to solve real-world security challenges.</p>
+        <p>My work focuses on threat analysis, incident handling, and log management. I build small tools to automate recon and triage, and I enjoy transforming findings into actionable remediation.</p>
       </section>
 
-      <!-- Skills Section -->
       <section id="skills" class="section">
         <h2>// Skills</h2>
-        <div class="skills">
-          <span>Python</span><span>Linux</span><span>BurpSuite</span><span>Wireshark</span>
-          <span>SIEM</span><span>Threat Intelligence</span><span>Incident Response</span><span>Digital Forensics</span>
-          <span>Blue Teaming</span><span>Red Teaming</span><span>Penetration Testing</span><span>Web Security</span>
-          <span>Network Security</span><span>Cloud Security</span><span>Log Analysis</span><span>OSINT</span>
+        <div class="grid cols-3">
+          <div class="card"><h3>Core</h3><p>Python, Bash, Linux, Networking</p></div>
+          <div class="card"><h3>Web</h3><p>XSS, SQLi, SSRF, CSRF, Auth Logic</p></div>
+          <div class="card"><h3>Infra</h3><p>SIEM, Cloud (AWS/GCP), Forensics</p></div>
         </div>
+        <div class="separator"></div>
+        <div class="card"><h3>Tools & Platforms</h3><p>Burp Suite, Wireshark, Splunk, Elastic, Nmap, Metasploit, Ghidra</p></div>
       </section>
 
-      <!-- Projects Section -->
       <section id="projects" class="section">
         <h2>// Projects</h2>
-
-        <!-- Example of 10+ project cards (repeatable) -->
-        <div class="card">
-          <h3>URL Recon Pro</h3>
-          <p>Intelligent URL reconnaissance & vulnerability mapping tool with automated scanning and reporting.</p>
-          <div class="tags"><span>Python</span><span>WebSec</span><span>Automation</span></div>
-        </div>
-        <div class="card">
-          <h3>PacketTrace Analyzer</h3>
-          <p>Deep packet inspection visualizer for traffic pattern analysis and anomaly detection.</p>
-          <div class="tags"><span>Wireshark</span><span>Networking</span><span>Python</span></div>
-        </div>
-        <div class="card">
-          <h3>ThreatScope</h3>
-          <p>AI-assisted threat intelligence aggregator and indicator correlator for SOC teams.</p>
-          <div class="tags"><span>Python</span><span>AI</span><span>ThreatIntel</span></div>
-        </div>
-
-        <!-- Add more dummy cards to simulate hundreds of entries -->
-        <div class="card"><h3>Exploit Finder</h3><p>Automated vulnerability scanner for common web application exploits.</p><div class="tags"><span>Python</span><span>WebSec</span></div></div>
-        <div class="card"><h3>NetWatcher</h3><p>Network traffic analyzer for monitoring suspicious activity in real-time.</p><div class="tags"><span>Networking</span><span>Monitoring</span></div></div>
-        <div class="card"><h3>Malware Sandbox</h3><p>Safe environment for analyzing and reverse-engineering malware samples.</p><div class="tags"><span>Python</span><span>Forensics</span></div></div>
-        <div class="card"><h3>VulnDB Tracker</h3><p>Database of known vulnerabilities with tracking, alerts, and exploit references.</p><div class="tags"><span>Python</span><span>Automation</span></div></div>
-        <div class="card"><h3>Security Dashboard</h3><p>Web-based dashboard for visualizing incidents, alerts, and security logs.</p><div class="tags"><span>JS</span><span>Dashboard</span></div></div>
-        <div class="card"><h3>Crypto Monitor</h3><p>Tool for monitoring blockchain transactions and suspicious patterns.</p><div class="tags"><span>Blockchain</span><span>Python</span></div></div>
-        <div class="card"><h3>PhishNet</h3><p>Automated phishing detection tool using email analysis and domain reputation checks.</p><div class="tags"><span>Python</span><span>EmailSec</span></div></div>
-
+        <div id="projectsContainer"></div>
       </section>
 
-      <!-- Bug Bounties Section -->
       <section id="bounties" class="section">
         <h2>// Bug Bounties</h2>
-
-        <div class="card"><h3>Example.com XSS</h3><p>Reflected XSS in search input. Reported and rewarded $300.</p><div class="tags"><span>XSS</span><span>JavaScript</span></div></div>
-        <div class="card"><h3>Acme Corp SQLi</h3><p>SQL Injection in login form. Responsible disclosure completed.</p><div class="tags"><span>SQLi</span><span>WebSec</span></div></div>
-        <div class="card"><h3>BetaSite CSRF</h3><p>CSRF vulnerability in user settings. Reported and remediated.</p><div class="tags"><span>CSRF</span><span>WebSec</span></div></div>
-        <div class="card"><h3>GammaApp Auth Bypass</h3><p>Authentication bypass through improper session handling.</p><div class="tags"><span>Auth</span><span>WebSec</span></div></div>
-
-        <!-- Additional dummy cards -->
-        <!-- Repeat as needed to simulate hundreds of entries -->
-
+        <div id="bountiesContainer"></div>
       </section>
 
-      <!-- Write-ups Section -->
       <section id="writeups" class="section">
         <h2>// Write-ups</h2>
-        <div class="card"><h3>XSS Challenge</h3><p>Step-by-step write-up of XSS lab on vulnerable web app.</p></div>
-        <div class="card"><h3>SQLi Lab</h3><p>SQL Injection challenge analysis with payloads and mitigation steps.</p></div>
-        <div class="card"><h3>CSRF Attack</h3><p>CSRF attack lab explained with PoC and defense strategies.</p></div>
+        <div id="writeupsContainer"></div>
       </section>
 
-      <!-- Hackathons Section -->
       <section id="hackathons" class="section">
         <h2>// Hackathons</h2>
-        <div class="card"><h3>CyberSec Challenge 2025</h3><p>Top 10 finalist in national cybersecurity hackathon.</p></div>
-        <div class="card"><h3>Bug Bounty Marathon</h3><p>Discovered multiple critical vulnerabilities in live environment.</p></div>
+        <div class="card"><h3>CyberSec Challenge 2025 — Top 10</h3><p>Team-based competition focusing on incident response and threat hunting.</p></div>
       </section>
 
-      <!-- Achievements Section -->
       <section id="achievements" class="section">
         <h2>// Achievements</h2>
         <ul>
-          <li>🏆 Top 1% in TryHackMe Cybersecurity Labs</li>
-          <li>🏆 Google Cybersecurity Professional Certificate</li>
-          <li>🏆 Multiple live bug bounties reported successfully</li>
+          <li>Top 1% in TryHackMe labs</li>
+          <li>Multiple bug bounty rewards</li>
+          <li>Community write-ups and trainings</li>
         </ul>
       </section>
 
-      <!-- Certifications Section -->
       <section id="certs" class="section">
         <h2>// Certifications</h2>
         <ul>
-          <li>✅ Google Cybersecurity Professional Certificate</li>
-          <li>✅ Splunk Fundamentals I</li>
-          <li>✅ TryHackMe: Threat Intelligence, Blue Team Labs</li>
-          <li>✅ Offensive Security Introduction (OSINT)</li>
+          <li>Google Cybersecurity Professional Certificate</li>
+          <li>Splunk Fundamentals I</li>
+          <li>Various TryHackMe courses</li>
         </ul>
       </section>
 
-      <!-- Contact Section -->
       <section id="contact" class="section">
         <h2>// Contact</h2>
-        <p>> Email: faizelahi06@gmail.com</p>
-        <p>> LinkedIn: <a href="https://linkedin.com/in/faizelahi01" target="_blank">faizelahi01</a></p>
-        <p>> GitHub: <a href="https://github.com/faiz-sec" target="_blank">faiz-sec</a></p>
-        <p>> Resume: <a href="resume.pdf" download>Download PDF</a></p>
+        <p>&gt; Email: <a href="mailto:faizelahi06@gmail.com">faizelahi06@gmail.com</a></p>
+        <p>&gt; LinkedIn: <a href="https://www.linkedin.com/in/faizelahi01/" target="_blank" rel="noreferrer">linkedin.com/in/faizelahi01</a></p>
+        <p>&gt; GitHub: <a href="https://github.com/faiz-sec" target="_blank" rel="noreferrer">github.com/faiz-sec</a></p>
+        <p>&gt; Resume: <a href="resume.pdf" download>Download PDF</a></p>
       </section>
 
-      <!-- Resume Section -->
       <section id="resume" class="section">
         <h2>// Resume</h2>
-        <p>Download my full resume with detailed experience, certifications, and project write-ups:</p>
-        <a href="resume.pdf" download>Download Resume</a>
+        <p>Click the link above to download a printable PDF. (Drop <code>resume.pdf</code> in the site root.)</p>
       </section>
 
-    </div>
+    </main>
   </div>
 
-  <footer style="text-align:center;margin-top:2rem;color:#00ff00;font-size:0.8rem;">
-    Built with 💻 HTML, CSS & JS — © 2025 Faiz Elahi
-  </footer>
-
+  <div class="footer">Built with ❤️ — Faiz Elahi — © <span id="year"></span></div>
 </div>
 
-<script src="script.js"></script>
+<script>
+/* ------------- Safety wrapper: try/catch to avoid silent crashes ------------- */
+(function () {
+  try {
+    /* ---------- Utility helpers ---------- */
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+    const setActiveSection = (id) => {
+      $$('.section').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById(id);
+      if (target) target.classList.add('active');
+    };
+
+    /* ---------- Boot sequence & fallback ---------- */
+    const bootEl = $('#boot');
+    const appEl = $('#app');
+    const yearEl = $('#year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // show main after bootDuration; also guard in case of JS errors
+    const bootDuration = 3500; // ms
+    function revealApp() {
+      try {
+        bootEl.style.display = 'none';
+        appEl.style.display = 'block';
+        appEl.setAttribute('aria-hidden', 'false');
+        // ensure content is visible and scrollable
+        document.body.style.overflow = 'auto';
+      } catch (e) {
+        console.error('revealApp error', e);
+        bootEl.style.display = 'none';
+        appEl.style.display = 'block';
+      }
+    }
+
+    // fallback: if something prevents reveal, reveal after 6s anyway
+    setTimeout(() => {
+      if (bootEl && bootEl.style.display !== 'none') {
+        revealApp();
+      }
+    }, 6000);
+
+    // primary reveal flow after DOM ready
+    document.addEventListener('DOMContentLoaded', () => {
+      // start boot typing feedback (progress dots)
+      let dotIdx = 0;
+      const dots = ['.', '..', '...','....','.....'];
+      const dotsInterval = setInterval(() => {
+        if (!bootEl) return clearInterval(dotsInterval);
+        const el = bootEl.querySelector('.dots');
+        if (el) el.textContent = `[ boot sequence running ${dots[dotIdx % dots.length]} ]`;
+        dotIdx++;
+      }, 450);
+
+      // schedule reveal
+      setTimeout(() => {
+        clearInterval(dotsInterval);
+        revealApp();
+        startTypewriter();
+        startMatrix();
+        populateDynamicContent(); // create many cards
+        attachSidebarHandlers();
+        makeCardsExpandable();
+      }, bootDuration);
+    });
+
+    /* ---------- Typewriter for header ---------- */
+    const headerText = "Faiz Elahi | Support Engineer @ Almuqeet Systems | Security Researcher | Threat Hunter | DFIR | SOC";
+    function startTypewriter() {
+      const el = $('#titleSmall');
+      if (!el) return;
+      let idx = 0;
+      const speed = 28;
+      function step() {
+        if (idx <= headerText.length) {
+          el.innerHTML = headerText.slice(0, idx) + '<span class="cursor"></span>';
+          idx++;
+          setTimeout(step, speed);
+        } else {
+          const cur = el.querySelector('.cursor');
+          if (cur) cur.style.display = 'none';
+        }
+      }
+      step();
+    }
+
+    /* ---------- Matrix Rain ---------- */
+    function startMatrix() {
+      const canvas = $('#matrixCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w = canvas.width = window.innerWidth;
+      let h = canvas.height = window.innerHeight;
+      const fontSize = 14;
+      const columns = Math.floor(w / fontSize);
+      const drops = [];
+      for (let i = 0; i < columns; i++) drops[i] = Math.floor(Math.random() * h / fontSize);
+
+      function draw() {
+        // semi-transparent background for trailing effect
+        ctx.fillStyle = 'rgba(0,0,0,0.12)';
+        ctx.fillRect(0, 0, w, h);
+        ctx.fillStyle = '#00ff88';
+        ctx.font = fontSize + 'px monospace';
+        for (let i = 0; i < drops.length; i++) {
+          const text = String.fromCharCode(33 + Math.random() * 94);
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+          if (drops[i] * fontSize > h && Math.random() > 0.975) drops[i] = 0;
+          drops[i]++;
+        }
+      }
+      let anim = setInterval(draw, 55);
+      window.addEventListener('resize', () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      });
+      // expose to window for debugging
+      window._matrixInterval = anim;
+    }
+
+    /* ---------- Sidebar handlers ---------- */
+    function attachSidebarHandlers() {
+      const btns = $$('.sidebar button');
+      btns.forEach(b => {
+        b.addEventListener('click', (ev) => {
+          btns.forEach(x => x.classList.remove('active'));
+          b.classList.add('active');
+          const sectionId = b.dataset.section;
+          setActiveSection(sectionId);
+          // scroll top for content area
+          const main = $('#content');
+          if (main) main.scrollTop = 0;
+        });
+      });
+    }
+
+    /* ---------- Dynamic content generator (many cards) ---------- */
+    function createCard(title, text, tags = []) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      const h3 = document.createElement('h3');
+      h3.textContent = title;
+      const p = document.createElement('p');
+      p.textContent = text;
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      meta.textContent = 'Details: click read more for full summary';
+      const tagsDiv = document.createElement('div');
+      tagsDiv.className = 'tags';
+      tags.forEach(t => {
+        const span = document.createElement('span');
+        span.className = 'tag';
+        span.textContent = t;
+        tagsDiv.appendChild(span);
+      });
+      card.appendChild(h3);
+      card.appendChild(p);
+      card.appendChild(tagsDiv);
+      card.appendChild(meta);
+      return card;
+    }
+
+    function populateDynamicContent() {
+      // Projects: create 120 sample projects
+      const projectsContainer = $('#projectsContainer');
+      if (projectsContainer) {
+        for (let i = 1; i <= 120; i++) {
+          const title = `Project ${i.toString().padStart(3,'0')} — Recon & Analysis`;
+          const text = `Project ${i}: built an automated recon pipeline that maps endpoints, finds hidden params, and generates prioritized test lists. Implementation details include custom heuristics, concurrency controls, and integration with passive DNS sources.`;
+          const tags = (i%3===0) ? ['Python','Recon','Automation'] : (i%3===1) ? ['JS','OSINT'] : ['Network','Pcap'];
+          const c = createCard(title, text, tags);
+          projectsContainer.appendChild(c);
+        }
+      }
+
+      // Bounties: create 80 sample bounties
+      const bountiesContainer = $('#bountiesContainer');
+      if (bountiesContainer) {
+        for (let i = 1; i <= 80; i++) {
+          const title = `Bounty ${i.toString().padStart(3,'0')} — Vulnerability Report`;
+          const text = `Bounty ${i}: discovered a medium-high severity issue (XSS/SQLi/CSRF) depending on target. Provided reproduction steps, PoC payloads, and recommended fixes (input validation, prepared statements, CSP).`;
+          const tags = (i%2===0) ? ['XSS','Web'] : ['SQLi','Auth'];
+          const c = createCard(title, text, tags);
+          bountiesContainer.appendChild(c);
+        }
+      }
+
+      // Write-ups: 50 sample write-ups
+      const writeupsContainer = $('#writeupsContainer');
+      if (writeupsContainer) {
+        for (let i = 1; i <= 50; i++) {
+          const title = `Write-up ${i.toString().padStart(2,'0')} — Lab Challenge`;
+          const text = `A detailed write-up covering attack chain, payloads, mitigations, and lessons learned. This write-up includes code snippets, payload encodings, and defensive guidance.`;
+          const tags = ['Write-up','Lab','Guide'];
+          const c = createCard(title, text, tags);
+          writeupsContainer.appendChild(c);
+        }
+      }
+
+      // After creating many cards, make them expandable
+      makeCardsExpandable();
+    }
+
+    /* ---------- Expand/collapse long text for cards ---------- */
+    function makeCardsExpandable() {
+      const cards = $$('.card');
+      cards.forEach(card => {
+        const p = card.querySelector('p');
+        if (!p) return;
+        const full = p.textContent;
+        if (full.length > 180) {
+          const short = full.slice(0, 150) + '...';
+          p.textContent = short;
+          const togg = document.createElement('span');
+          togg.textContent = ' [Read more]';
+          togg.className = 'readmore';
+          togg.addEventListener('click', () => {
+            if (p.textContent.endsWith('...')) {
+              p.textContent = full;
+              togg.textContent = ' [Show less]';
+            } else {
+              p.textContent = short;
+              togg.textContent = ' [Read more]';
+            }
+            p.appendChild(togg);
+          });
+          p.appendChild(togg);
+        }
+      });
+    }
+
+    /* ---------- Accessibility: keyboard nav for sidebar ---------- */
+    function enableKeyboardNav() {
+      const btns = $$('.sidebar button');
+      let idx = 0;
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown') { idx = Math.min(btns.length-1, idx+1); btns[idx].focus(); }
+        if (e.key === 'ArrowUp') { idx = Math.max(0, idx-1); btns[idx].focus(); }
+        if (e.key === 'Enter' && document.activeElement.tagName === 'BUTTON') {
+          document.activeElement.click();
+        }
+      });
+    }
+    enableKeyboardNav();
+
+    /* ---------- Small safety: if any error occurs, reveal UI so user isn't stuck ---------- */
+    window.addEventListener('error', (ev) => {
+      console.error('Window error caught:', ev.error || ev.message);
+      // reveal UI in case of JS crash
+      const boot = $('#boot'); if (boot) boot.style.display = 'none';
+      const app = $('#app'); if (app) app.style.display = 'block';
+    });
+
+    // Expose some helpers for debugging in console
+    window._faizHelpers = {
+      revealApp, startMatrix, startTypewriter, populateDynamicContent, makeCardsExpandable
+    };
+
+  } catch (outerErr) {
+    console.error('Fatal initialization error:', outerErr);
+    // Ensure UI isn't permanently blocked:
+    try { document.getElementById('boot').style.display = 'none'; document.getElementById('app').style.display = 'block'; } catch(e){}
+  }
+})();
+</script>
 </body>
 </html>
