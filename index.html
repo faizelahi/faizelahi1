@@ -1,77 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Faiz Elahi | Codespace Resume</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faiz Elahi | Hacker Portfolio</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="terminal">
-    <div class="header">
+
+<!-- Boot animation -->
+<div id="boot" class="boot">
+  <p>Initializing system...</p>
+  <p>Loading modules...</p>
+  <p>Starting terminal interface...</p>
+  <p>Loading hacker profile...</p>
+  <p>Almost ready...</p>
+</div>
+
+<!-- Main container -->
+<div id="main" style="display:none;">
+
+  <!-- Terminal header -->
+  <div class="header">
+    <div class="dots">
       <span class="dot red"></span>
       <span class="dot yellow"></span>
       <span class="dot green"></span>
-      <h1>$ whoami</h1>
+    </div>
+    <h1 id="typewriter"></h1>
+  </div>
+
+  <!-- Container -->
+  <div class="container">
+
+    <!-- Sidebar navigation -->
+    <div class="sidebar">
+      <button class="active" data-section="about">About</button>
+      <button data-section="skills">Skills</button>
+      <button data-section="projects">Projects</button>
+      <button data-section="bounties">Bug Bounties</button>
+      <button data-section="writeups">Write-ups</button>
+      <button data-section="hackathons">Hackathons</button>
+      <button data-section="achievements">Achievements</button>
+      <button data-section="certs">Certifications</button>
+      <button data-section="contact">Contact</button>
+      <button data-section="resume">Resume</button>
     </div>
 
-    <div class="content">
-      <p id="typewriter"></p>
+    <!-- Main content -->
+    <div class="main">
 
-      <nav>
-        <button data-section="about">ABOUT</button>
-        <button data-section="projects">PROJECTS</button>
-        <button data-section="skills">SKILLS</button>
-        <button data-section="certs">CERTIFICATIONS</button>
-        <button data-section="contact">CONTACT</button>
-      </nav>
-
+      <!-- About Section -->
       <section id="about" class="section active">
-        <p>
-          I am an aspiring cybersecurity professional focused on launching a career in Tech. With a keen interest in defensive security, I am driven to develop expertise in monitoring, detecting, and responding to cyber threats. My goal is to apply my foundational knowledge in threat analysis, incident handling, and log management to contribute effectively to proactive security measures within an organization.
-        </p>
+        <h2>// About Me</h2>
+        <p>I am an aspiring cybersecurity professional focused on launching a career in Tech. With a keen interest in defensive security, I am driven to develop expertise in monitoring, detecting, and responding to cyber threats.</p>
+        <p>My goal is to apply my foundational knowledge in threat analysis, incident handling, and log management to contribute effectively to proactive security measures within an organization.</p>
+        <p>I love building tools, exploring vulnerabilities, and sharing knowledge with the community. Curiosity drives me to push boundaries safely and ethically.</p>
+        <p>Additional details: Experienced with SIEM, Digital Forensics, Incident Response, Threat Intelligence, and Security Operations Centers (SOC).</p>
+        <p>My mission is to merge technical skills with analytical thinking to solve real-world security challenges.</p>
       </section>
 
-      <section id="projects" class="section">
-        <h2>// Projects</h2>
-        <ul>
-          <li><b>URL Recon Pro:</b> Intelligent URL reconnaissance & vulnerability mapping tool.</li>
-          <li><b>PacketTrace Analyzer:</b> Deep packet inspection visualizer for traffic pattern analysis.</li>
-          <li><b>ThreatScope:</b> AI-assisted threat intelligence aggregator and indicator correlator.</li>
-        </ul>
-      </section>
-
+      <!-- Skills Section -->
       <section id="skills" class="section">
         <h2>// Skills</h2>
         <div class="skills">
           <span>Python</span><span>Linux</span><span>BurpSuite</span><span>Wireshark</span>
-          <span>SIEM</span><span>Threat Intel</span><span>Incident Response</span><span>Forensics</span>
+          <span>SIEM</span><span>Threat Intelligence</span><span>Incident Response</span><span>Digital Forensics</span>
+          <span>Blue Teaming</span><span>Red Teaming</span><span>Penetration Testing</span><span>Web Security</span>
+          <span>Network Security</span><span>Cloud Security</span><span>Log Analysis</span><span>OSINT</span>
         </div>
       </section>
 
+      <!-- Projects Section -->
+      <section id="projects" class="section">
+        <h2>// Projects</h2>
+
+        <!-- Example of 10+ project cards (repeatable) -->
+        <div class="card">
+          <h3>URL Recon Pro</h3>
+          <p>Intelligent URL reconnaissance & vulnerability mapping tool with automated scanning and reporting.</p>
+          <div class="tags"><span>Python</span><span>WebSec</span><span>Automation</span></div>
+        </div>
+        <div class="card">
+          <h3>PacketTrace Analyzer</h3>
+          <p>Deep packet inspection visualizer for traffic pattern analysis and anomaly detection.</p>
+          <div class="tags"><span>Wireshark</span><span>Networking</span><span>Python</span></div>
+        </div>
+        <div class="card">
+          <h3>ThreatScope</h3>
+          <p>AI-assisted threat intelligence aggregator and indicator correlator for SOC teams.</p>
+          <div class="tags"><span>Python</span><span>AI</span><span>ThreatIntel</span></div>
+        </div>
+
+        <!-- Add more dummy cards to simulate hundreds of entries -->
+        <div class="card"><h3>Exploit Finder</h3><p>Automated vulnerability scanner for common web application exploits.</p><div class="tags"><span>Python</span><span>WebSec</span></div></div>
+        <div class="card"><h3>NetWatcher</h3><p>Network traffic analyzer for monitoring suspicious activity in real-time.</p><div class="tags"><span>Networking</span><span>Monitoring</span></div></div>
+        <div class="card"><h3>Malware Sandbox</h3><p>Safe environment for analyzing and reverse-engineering malware samples.</p><div class="tags"><span>Python</span><span>Forensics</span></div></div>
+        <div class="card"><h3>VulnDB Tracker</h3><p>Database of known vulnerabilities with tracking, alerts, and exploit references.</p><div class="tags"><span>Python</span><span>Automation</span></div></div>
+        <div class="card"><h3>Security Dashboard</h3><p>Web-based dashboard for visualizing incidents, alerts, and security logs.</p><div class="tags"><span>JS</span><span>Dashboard</span></div></div>
+        <div class="card"><h3>Crypto Monitor</h3><p>Tool for monitoring blockchain transactions and suspicious patterns.</p><div class="tags"><span>Blockchain</span><span>Python</span></div></div>
+        <div class="card"><h3>PhishNet</h3><p>Automated phishing detection tool using email analysis and domain reputation checks.</p><div class="tags"><span>Python</span><span>EmailSec</span></div></div>
+
+      </section>
+
+      <!-- Bug Bounties Section -->
+      <section id="bounties" class="section">
+        <h2>// Bug Bounties</h2>
+
+        <div class="card"><h3>Example.com XSS</h3><p>Reflected XSS in search input. Reported and rewarded $300.</p><div class="tags"><span>XSS</span><span>JavaScript</span></div></div>
+        <div class="card"><h3>Acme Corp SQLi</h3><p>SQL Injection in login form. Responsible disclosure completed.</p><div class="tags"><span>SQLi</span><span>WebSec</span></div></div>
+        <div class="card"><h3>BetaSite CSRF</h3><p>CSRF vulnerability in user settings. Reported and remediated.</p><div class="tags"><span>CSRF</span><span>WebSec</span></div></div>
+        <div class="card"><h3>GammaApp Auth Bypass</h3><p>Authentication bypass through improper session handling.</p><div class="tags"><span>Auth</span><span>WebSec</span></div></div>
+
+        <!-- Additional dummy cards -->
+        <!-- Repeat as needed to simulate hundreds of entries -->
+
+      </section>
+
+      <!-- Write-ups Section -->
+      <section id="writeups" class="section">
+        <h2>// Write-ups</h2>
+        <div class="card"><h3>XSS Challenge</h3><p>Step-by-step write-up of XSS lab on vulnerable web app.</p></div>
+        <div class="card"><h3>SQLi Lab</h3><p>SQL Injection challenge analysis with payloads and mitigation steps.</p></div>
+        <div class="card"><h3>CSRF Attack</h3><p>CSRF attack lab explained with PoC and defense strategies.</p></div>
+      </section>
+
+      <!-- Hackathons Section -->
+      <section id="hackathons" class="section">
+        <h2>// Hackathons</h2>
+        <div class="card"><h3>CyberSec Challenge 2025</h3><p>Top 10 finalist in national cybersecurity hackathon.</p></div>
+        <div class="card"><h3>Bug Bounty Marathon</h3><p>Discovered multiple critical vulnerabilities in live environment.</p></div>
+      </section>
+
+      <!-- Achievements Section -->
+      <section id="achievements" class="section">
+        <h2>// Achievements</h2>
+        <ul>
+          <li>🏆 Top 1% in TryHackMe Cybersecurity Labs</li>
+          <li>🏆 Google Cybersecurity Professional Certificate</li>
+          <li>🏆 Multiple live bug bounties reported successfully</li>
+        </ul>
+      </section>
+
+      <!-- Certifications Section -->
       <section id="certs" class="section">
         <h2>// Certifications</h2>
         <ul>
           <li>✅ Google Cybersecurity Professional Certificate</li>
           <li>✅ Splunk Fundamentals I</li>
           <li>✅ TryHackMe: Threat Intelligence, Blue Team Labs</li>
+          <li>✅ Offensive Security Introduction (OSINT)</li>
         </ul>
       </section>
 
+      <!-- Contact Section -->
       <section id="contact" class="section">
         <h2>// Contact</h2>
-        <p>> faizelahi06@gmail.com</p>
-        <p>> <a href="https://linkedin.com/in/faizelahi01" target="_blank">LinkedIn</a></p>
-        <p>> <a href="https://github.com/faiz-sec" target="_blank">GitHub</a></p>
-        <p>> <a href="resume.pdf" download>Download Resume</a></p>
+        <p>> Email: faizelahi06@gmail.com</p>
+        <p>> LinkedIn: <a href="https://linkedin.com/in/faizelahi01" target="_blank">faizelahi01</a></p>
+        <p>> GitHub: <a href="https://github.com/faiz-sec" target="_blank">faiz-sec</a></p>
+        <p>> Resume: <a href="resume.pdf" download>Download PDF</a></p>
       </section>
+
+      <!-- Resume Section -->
+      <section id="resume" class="section">
+        <h2>// Resume</h2>
+        <p>Download my full resume with detailed experience, certifications, and project write-ups:</p>
+        <a href="resume.pdf" download>Download Resume</a>
+      </section>
+
     </div>
   </div>
 
-  <footer>
+  <footer style="text-align:center;margin-top:2rem;color:#00ff00;font-size:0.8rem;">
     Built with 💻 HTML, CSS & JS — © 2025 Faiz Elahi
   </footer>
 
-  <script src="script.js"></script>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
