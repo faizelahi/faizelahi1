@@ -1,159 +1,325 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Faiz Elahi Portfolio</title>
-<link rel="stylesheet" href="style.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> <!-- For 3D Matrix -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blue Teamer — Portfolio</title>
+  <meta name="description" content="Blue Team portfolio / defensive security showcase" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#071029; /* deep navy */
+      --accent:#00aaff; /* cyan-blue */
+      --muted:#6b7a8a;
+      --card:#0b1a2b;
+      --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.02);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;background:linear-gradient(180deg,var(--bg),#020612);font-family:Inter,system-ui,Arial;color:#dfefff;margin:0}
+    a{color:var(--accent);text-decoration:none}
+
+    /* layout */
+    .container{max-width:1100px;margin:32px auto;padding:24px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#005f9e);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,170,255,0.08);font-weight:800}
+    .brand h1{font-size:18px;margin:0}
+    nav{display:flex;gap:12px;align-items:center}
+    nav a{padding:8px 12px;border-radius:8px;background:transparent;border:1px solid transparent}
+    nav a:hover{background:var(--glass);border-color:rgba(0,170,255,0.08)}
+
+    /* hero */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;margin-top:28px}
+    .card{background:linear-gradient(180deg,var(--card),#071226);border-radius:14px;padding:20px;box-shadow:0 8px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.02)}
+
+    .intro h2{margin:0 0 8px 0;font-size:28px}
+    .intro p{color:var(--muted);margin:0 0 12px}
+    .badges{display:flex;gap:8px;flex-wrap:wrap}
+    .badge{background:var(--glass);padding:8px 10px;border-radius:999px;font-size:13px;border:1px solid rgba(255,255,255,0.02)}
+
+    .avatar{position:relative;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px}
+    .avatar canvas{width:360px;height:320px;max-width:100%;border-radius:10px;background:linear-gradient(180deg, rgba(0,122,204,0.04), transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,0.02)}
+    .download{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),#0077cc);font-weight:600;color:#001d2b}
+
+    /* sections */
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+    .tools-list{display:flex;flex-direction:column;gap:10px}
+    .tool{display:flex;align-items:center;gap:12px;padding:10px;background:var(--glass-2);border-radius:10px}
+    .tool .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px rgba(0,170,255,0.18)}
+
+    .projects{display:flex;flex-direction:column;gap:12px}
+    .project{display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:8px;background:linear-gradient(90deg, rgba(0,170,255,0.02), transparent);border:1px solid rgba(255,255,255,0.02)}
+
+    /* terminal */
+    .terminal{background:#001122;border-radius:10px;padding:12px;font-family:monospace;color:#bfe9ff;min-height:120px;position:relative}
+    .terminal .prompt{opacity:0.9}
+    .terminal .line{margin:6px 0}
+
+    /* timeline */
+    .timeline{padding:18px;display:flex;flex-direction:column;gap:14px}
+    .timeline .event{display:flex;gap:12px}
+    .timeline .event .year{min-width:72px;color:var(--muted)}
+
+    footer{margin:28px 0 80px 0;text-align:center;color:var(--muted)}
+
+    /* small screens */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr;}
+      .grid-3{grid-template-columns:1fr;}
+    }
+
+    /* neon glows */
+    .neon{position:relative}
+    .neon:after{content:"";position:absolute;inset:0;border-radius:12px;box-shadow:0 0 40px rgba(0,170,255,0.06)}
+
+    /* interactive cards */
+    .glass-tilt{transition:transform .22s ease, box-shadow .22s ease}
+    .glass-tilt:hover{transform:translateY(-6px) rotateX(4deg);box-shadow:0 18px 40px rgba(0,170,255,0.06)}
+
+    /* small touches */
+    .kpi{display:flex;gap:12px;align-items:center}
+    .kpi .big{font-size:22px;font-weight:700}
+
+    /* quick floating icons */
+    .floating-icons{position:fixed;right:14px;bottom:20px;display:flex;flex-direction:column;gap:10px}
+    .fi{width:52px;height:52px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.03)}
+
+  </style>
 </head>
 <body>
-<div id="particles"></div> <!-- New: Particle Background -->
-<canvas id="matrixCanvas"></canvas>
-<div class="scanlines"></div> <!-- New: Scanline Overlay -->
 
-<div id="boot">
-  <p>Initializing advanced systems...</p>
-  <p>Loading 3D matrix renderer...</p>
-  <p>Activating particle engine...</p>
-  <p>Boot sequence complete.</p>
-  <div class="dots">[ loading... ]</div>
-</div>
-
-<div id="app">
-  <header class="header">
-    <div class="dots">
-      <span class="dot red"></span>
-      <span class="dot yellow"></span>
-      <span class="dot green"></span>
-    </div>
-    <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
-      <animateTransform attributeName="transform" type="rotate" values="0 12 12;360 12 12" dur="2s" repeatCount="indefinite"/>
-    </svg>
-    <h1 id="typewriter"></h1>
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search projects/tags...">
-      <button id="searchBtn"><i class="fas fa-search"></i></button>
-    </div>
-    <i class="fas fa-moon theme-toggle" id="themeToggle"></i>
-    <button id="cyberMode" class="cyber-toggle">Cyber Mode</button> <!-- New: Extra Theme -->
-  </header>
-
-  <div class="container">
-    <aside class="sidebar">
-      <div class="brand">Faiz · Codespace</div>
-      <button class="active" data-section="hero">Hero</button>
-      <button data-section="about">About</button>
-      <button data-section="skills">Skills</button>
-      <button data-section="projects">Projects</button>
-      <button data-section="bounties">Bug Bounties</button>
-      <button data-section="writeups">Write-ups</button>
-      <button data-section="hackathons">Hackathons</button>
-      <button data-section="gallery">Gallery</button>
-      <button data-section="testimonials">Testimonials</button>
-      <button data-section="blog">Blog</button>
-      <button data-section="timeline">Timeline</button>
-      <button data-section="contact">Contact</button>
-      <button data-section="resume">Resume</button>
-    </aside>
-
-    <main class="content" id="content">
-      <section id="hero" class="section active">
-        <h2 class="glitch">// Welcome to My Cyber Domain</h2>
-        <p>I'm Faiz Elahi, a cybersecurity enthusiast specializing in threat hunting, DFIR, and SOC operations. Explore my portfolio of projects, bounties, and insights.</p>
-      </section>
-
-      <section id="about" class="section">
-        <h2 class="glitch">// About</h2>
-        <p>Dummy: Aspiring cybersecurity professional with a passion for defensive security. I automate recon, analyze threats, and build tools for incident response. Based in [Location], I hold certifications like Google Cybersecurity and Splunk Fundamentals.</p>
-      </section>
-
-      <section id="skills" class="section">
-        <h2 class="glitch">// Skills</h2>
-        <div class="skill-tree">
-          <div class="skill-node" data-skill="Core">
-            <h3>Core</h3>
-            <div class="sub-skills"><span>Python</span><span>Bash</span><span>Linux</span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:90%"></div></div>
-          </div>
-          <!-- More nodes... -->
-        </div>
-      </section>
-
-      <section id="projects" class="section">
-        <h2 class="glitch">// Projects</h2>
-        <div id="projectsContainer"></div>
-      </section>
-
-      <section id="bounties" class="section">
-        <h2 class="glitch">// Bug Bounties</h2>
-        <div id="bountiesContainer"></div>
-      </section>
-
-      <section id="writeups" class="section">
-        <h2 class="glitch">// Write-ups</h2>
-        <div id="writeupsContainer"></div>
-      </section>
-
-      <section id="hackathons" class="section">
-        <h2 class="glitch">// Hackathons</h2>
-        <div class="card"><h3>CyberSec Challenge 2025</h3><p>Dummy: Top 10 in team-based incident response competition.</p></div>
-      </section>
-
-      <section id="gallery" class="section">
-        <h2 class="glitch">// Gallery</h2>
-        <div class="gallery-carousel">
-          <img src="https://via.placeholder.com/400x300?text=Project+Screenshot" alt="Gallery Image">
-          <!-- More images... -->
-        </div>
-      </section>
-
-      <section id="testimonials" class="section">
-        <h2 class="glitch">// Testimonials</h2>
-        <div class="slider">
-          <div class="slides">
-            <div class="slide"><p>"Faiz's recon tools saved us hours!" - Dummy Client</p><iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe></div>
-            <!-- More slides... -->
-          </div>
-          <div class="slider-controls"><button id="prevSlide">Prev</button><button id="nextSlide">Next</button></div>
-        </div>
-      </section>
-
-      <section id="blog" class="section">
-        <h2 class="glitch">// Blog</h2>
-        <div id="blogContainer"></div>
-      </section>
-
-      <section id="timeline" class="section">
-        <h2 class="glitch">// Timeline</h2>
-        <div id="timelineContainer"></div>
-      </section>
-
-      <section id="contact" class="section">
-        <h2 class="glitch">// Contact</h2>
-        <form class="contact-form">
-          <input type="text" name="name" placeholder="Name" required>
-          <input type="email" name="email" placeholder="Email" required>
-          <textarea name="message" placeholder="Message" required></textarea>
-          <div class="captcha">CAPTCHA: Type 'human'</div>
-          <input type="text" name="captcha" placeholder="Enter CAPTCHA" required>
-          <button type="submit">Send</button>
-        </form>
-      </section>
-
-      <section id="resume" class="section">
-        <h2 class="glitch">// Resume</h2>
-        <p>Dummy: Download my PDF resume. <a href="resume.pdf" download>Download PDF</a></p>
-      </section>
-    </main>
+  <div style="position:fixed;inset:0;pointer-events:none;z-index:0">
+    <!-- subtle matrix / network background canvas -->
+    <canvas id="bgcanvas" style="width:100%;height:100%"></canvas>
   </div>
 
-  <div class="footer">Built with ❤️ — Faiz Elahi — © <span id="year"></span></div>
-</div>
+  <div class="container" style="position:relative;z-index:2">
+    <header>
+      <div class="brand">
+        <div class="logo">BT</div>
+        <div>
+          <h1>Blue Teamer — Owaais Nazir</h1>
+          <div style="font-size:12px;color:var(--muted)">Defensive Security • SOC • Threat Hunting</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#projects">Projects</a>
+        <a href="#tools">Tools</a>
+        <a href="#timeline">Timeline</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
 
-<div class="modal"><div class="modal-content"><span class="close">&times;</span><div id="modalBody"></div></div></div>
+    <section class="hero">
+      <div class="card intro glass-tilt neon">
+        <h2>Blue Team Portfolio</h2>
+        <p>I'm a defensive security enthusiast focusing on detection engineering, threat hunting, incident response and tooling to harden systems. This portfolio showcases tools, writeups, and demos.</p>
 
-<script src="script.js"></script>
+        <div class="badges">
+          <div class="badge">SOC Analyst</div>
+          <div class="badge">Threat Hunting</div>
+          <div class="badge">SIEM / EDR</div>
+          <div class="badge">Forensics</div>
+          <div class="badge">Detection Engineering</div>
+        </div>
+
+        <hr style="margin:16px 0;border:none;border-top:1px solid rgba(255,255,255,0.03)"/>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <div class="kpi">
+            <div>
+              <div class="big">25+</div>
+              <div style="font-size:12px;color:var(--muted)">Hunting Exercises</div>
+            </div>
+            <div style="margin-left:10px">
+              <div class="big">12</div>
+              <div style="font-size:12px;color:var(--muted)">Detection Rules</div>
+            </div>
+          </div>
+
+          <div style="text-align:right">
+            <a class="download" href="#" onclick="downloadResume(event)">Download CV</a>
+            <div style="font-size:12px;color:var(--muted);margin-top:6px">Open for collaborations & mentoring</div>
+          </div>
+        </div>
+
+        <hr style="margin:14px 0;border:none;border-top:1px solid rgba(255,255,255,0.02)"/>
+
+        <div class="terminal" id="demo-terminal">
+          <div class="line"><span class="prompt">$</span> <span id="termtext">Starting threat-hunt scan...</span></div>
+        </div>
+      </div>
+
+      <aside class="card avatar neon glass-tilt">
+        <canvas id="avatarCanvas" width="720" height="640"></canvas>
+        <a class="download" href="#" style="display:block;text-align:center" onclick="downloadResume(event)">Download Resume</a>
+      </aside>
+    </section>
+
+    <section class="grid-3" style="margin-top:24px">
+      <div class="card tools" id="tools">
+        <h3>Tools & Stack</h3>
+        <div class="tools-list">
+          <div class="tool"><div class="dot"></div><div>ELK / Elastic SIEM</div></div>
+          <div class="tool"><div class="dot"></div><div>Splunk</div></div>
+          <div class="tool"><div class="dot"></div><div>Velociraptor</div></div>
+          <div class="tool"><div class="dot"></div><div>OSQuery</div></div>
+          <div class="tool"><div class="dot"></div><div>Wazuh</div></div>
+          <div class="tool"><div class="dot"></div><div>Suricata</div></div>
+          <div class="tool"><div class="dot"></div><div>Python / Golang</div></div>
+        </div>
+      </div>
+
+      <div class="card projects" id="projects">
+        <h3>Selected Projects</h3>
+        <div class="project">
+          <div>
+            <div style="font-weight:600">Detection Pack — Windows Lateral Movement</div>
+            <div style="font-size:12px;color:var(--muted)">YARA & Sigma rules + Hunting notebook</div>
+          </div>
+          <div><a href="#">View</a></div>
+        </div>
+        <div class="project">
+          <div>
+            <div style="font-weight:600">OpenSOC Dashboard</div>
+            <div style="font-size:12px;color:var(--muted)">Custom visualizations & playbooks</div>
+          </div>
+          <div><a href="#">Demo</a></div>
+        </div>
+        <div class="project">
+          <div>
+            <div style="font-weight:600">Endpoint Forensics Toolkit</div>
+            <div style="font-size:12px;color:var(--muted)">Automation for triage & collection</div>
+          </div>
+          <div><a href="#">Repo</a></div>
+        </div>
+      </div>
+
+      <div class="card glass-tilt">
+        <h3>Quick Notes</h3>
+        <p style="color:var(--muted);margin:0 0 10px">I write detection rules, build dashboards, and automate triage. I enjoy red vs blue exercises and share writeups.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <div class="badge">Writeups</div>
+          <div class="badge">Labs</div>
+          <div class="badge">Tools</div>
+          <div class="badge">CTFs</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card timeline" id="timeline">
+      <h3>Experience & Timeline</h3>
+      <div class="event"><div class="year">2024</div><div>Intern — SOC, Phoenix Advance Software — detection engineering</div></div>
+      <div class="event"><div class="year">2023</div><div>Created BloggersSight — full-stack project & deployment</div></div>
+      <div class="event"><div class="year">2022</div><div>Self-study: digital forensics, OSQuery, SIEM tuning</div></div>
+    </section>
+
+    <section class="card" id="contact">
+      <h3>Contact & Connect</h3>
+      <p style="color:var(--muted)">Want to collaborate on blue-team tooling or mentoring? Drop a note.</p>
+      <form onsubmit="sendContact(event)">
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <input name="name" placeholder="Your name" style="flex:1;padding:10px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.03);color:inherit" required>
+          <input name="email" placeholder="Email" style="flex:1;padding:10px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.03);color:inherit" required>
+        </div>
+        <textarea name="message" placeholder="Short message" style="width:100%;margin-top:8px;padding:10px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.03);color:inherit" required></textarea>
+        <div style="display:flex;justify-content:flex-end;margin-top:8px"><button style="padding:10px 14px;border-radius:8px;background:var(--accent);border:none;color:#001d2b;font-weight:700">Send</button></div>
+      </form>
+    </section>
+
+    <footer>Built with ❤️ — customize this template. — Owaais Nazir</footer>
+  </div>
+
+  <div class="floating-icons">
+    <div class="fi" title="GitHub"><a href="#" style="display:block;width:100%;height:100%;text-align:center;line-height:52px;color:var(--muted)">GH</a></div>
+    <div class="fi" title="LinkedIn"><a href="#" style="display:block;width:100%;height:100%;text-align:center;line-height:52px;color:var(--muted)">IN</a></div>
+  </div>
+
+  <script>
+    // Background "matrix / network" effect
+    const bg = document.getElementById('bgcanvas');
+    const bctx = bg.getContext('2d');
+    let w=bg.width=innerWidth, h=bg.height=innerHeight;
+    const cols = Math.floor(w/20);
+    let drops = Array(cols).fill(0).map(()=>Math.random()*h);
+    function resizeBg(){w=bg.width=innerWidth;h=bg.height=innerHeight}
+    addEventListener('resize',resizeBg);
+    function draw(){
+      bctx.fillStyle='rgba(2,6,23,0.45)';bctx.fillRect(0,0,w,h);
+      bctx.fillStyle='rgba(0,170,255,0.06)';
+      bctx.font='12px monospace';
+      for(let i=0;i<cols;i++){
+        const x=i*20; const text = ['0','1','>','/','_','{','}'][Math.floor(Math.random()*7)];
+        bctx.fillText(text,x,drops[i]);
+        drops[i]+=12+Math.random()*10;
+        if(drops[i]>h) drops[i]=0;
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    // Avatar canvas: small procedural badge
+    const av = document.getElementById('avatarCanvas');
+    const actx = av.getContext('2d');
+    function drawAvatar(){
+      actx.clearRect(0,0,av.width,av.height);
+      const cx=av.width/2, cy=av.height/2;
+      // outer ring
+      const grd = actx.createLinearGradient(0,0,av.width,av.height);
+      grd.addColorStop(0,'#00aaff');grd.addColorStop(1,'#004d7a');
+      actx.fillStyle=grd; actx.fillRect(0,0,av.width,av.height);
+      // central shield
+      actx.beginPath(); actx.moveTo(cx-80,cy+40); actx.lineTo(cx,cy-140); actx.lineTo(cx+80,cy+40); actx.closePath();
+      actx.fillStyle='#001827'; actx.fill();
+      actx.strokeStyle='rgba(0,170,255,0.9)'; actx.lineWidth=6; actx.stroke();
+      // initials
+      actx.fillStyle='#aee8ff'; actx.font='bold 72px Inter, Arial'; actx.textAlign='center'; actx.fillText('ON',cx,cy+20);
+    }
+    drawAvatar();
+
+    // demo terminal text animation
+    const term = document.getElementById('termtext');
+    const demoLines = [
+      'Scanning endpoints for anomalous process creation...',
+      'Applying detection rule: suspicious-wmi-exec.sig...',
+      'Found 3 potential alerts — correlating events...',
+      'Enriching with threat intel (malicious hashes)...',
+      'Hunt complete: 3 matches. Recommend triage.'
+    ];
+    let li=0; let char=0;
+    function tick(){
+      term.textContent = demoLines[li].slice(0,char);
+      char++;
+      if(char>demoLines[li].length){
+        li=(li+1)%demoLines.length; char=0; setTimeout(tick,900);
+      } else setTimeout(tick,36+Math.random()*40);
+    }
+    tick();
+
+    // simple contact form handler (local only)
+    function sendContact(e){
+      e.preventDefault();
+      const f = e.target; const name=f.name.value; const email=f.email.value; const msg=f.message.value;
+      alert(`Thanks ${name}! Your message was delivered (demo).\nEmail: ${email}\nMessage: ${msg}`);
+      f.reset();
+    }
+
+    // Resume download stub
+    function downloadResume(e){
+      e && e.preventDefault();
+      const blob = new Blob([`Owaais Nazir - Blue Teamer\n\nSummary: Defensive security & detection engineering.\nProjects: Detection pack, OpenSOC Dashboard, Endpoint Forensics Toolkit`],{type:'text/plain'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download='Owaais_Nazir_Resume.txt'; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),5000);
+    }
+
+    // small UX: clicking project links opens placeholder modal
+    document.querySelectorAll('.project a').forEach(a=>a.addEventListener('click',ev=>{ev.preventDefault();alert('This would open the project demo or repository (replace with real links).')}));
+
+  </script>
 </body>
 </html>
